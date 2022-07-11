@@ -43,13 +43,11 @@ class Window:
         self.text.delete("1.0","end")
 
     def insert(self,result): 
-        self.text.insert(tk.INSERT,result)
-
-    
+        self.text.insert(tk.INSERT,result)   
 
 
 
 root = tk.Tk()
-root.title("QueryParser v1")
+root.title("QueryParser v2")
 window = Window(root)
 root.mainloop()
