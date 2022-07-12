@@ -1,28 +1,26 @@
-import constants
+from constants import PALABRAS_RESERVADAS
 
-query = "select id, descripcion, coordenada_x, coordenada_y from miescuelamg.becas_media_asentamientos a"
+query_prueba = "select alumno_id, tipo_documento, primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, fecha_nacimiento, sexo, pais_nac, telefono_alternativo, email, trabaja, sueldo, pension, pensionado, padres_presos, discapacitado, enfermedad, vive_con, embarazada, tiene_hijos, tiene_subsidios, responsable_propio, created_at, updated_at from becasmedias.alumno a"
 
-query2 = "select id, solicitud_id, vinculo_responsable_id, primer_apellido_responsable, segundo_apellido_responsable, primer_nombre_responsable, segundo_nombre_responsable, fecha_nacimiento_responsable, sexo_responsable, pais_responsable_id, tipo_documento_responsable_id, documento_responsable, cuil_responsable, telefono_responsable, email_responsable, created_at, updated_at from miescuelamg.becas_media_responsable r left join miescuelamg.becas_media_solicitud s on r.solicitud_id = s.id"
 
-query3 = "select * from aaaaa join ON ASASDASD aaaa"
-
-query4 = "select beneficiario_tipo_registro, beneficiario_id, nombre, apellido, beneficiario_nombre_completo, tipo_documento, numero_documento, correo_electrónico, mail_turnero, telefono_turnero, celular, telefono, telefono_alternativo, nro_serie_equipo, tipo_dispositivo, marca_equipo, estado_equipo, estado_matrícula, grado from miescuelamg.psba_data pd"
-query2_split = query2.split()
-
-#query_ingresar = input()
-
-PALABRAS_RESERVADAS = constants.PALABRAS_RESERVADAS
-
+"""
 def check_next_from(lista,elemento):
     try:
         if lista[lista.index(elemento)+1] == "FROM":
             return True
     except:
         None
-    
+"""    
 def check_next_reservada(lista,elemento):
     try:
         if lista[lista.index(elemento)+1] in PALABRAS_RESERVADAS:
+            return True
+    except:
+        None
+
+def check_not_next_reservada(lista,elemento):
+    try:
+        if lista[lista.index(elemento)+1] not in PALABRAS_RESERVADAS:
             return True
     except:
         None
@@ -34,12 +32,7 @@ def check_not_prev_reservada(lista,elemento):
     except:
         None
 
-def check_not_next_reservada(lista,elemento):
-    try:
-        if lista[lista.index(elemento)+1] not in PALABRAS_RESERVADAS:
-            return True
-    except:
-        None
+
 
 def reservadas_upper(lista):
 
@@ -53,7 +46,7 @@ def palabras_reservadas(elemento):
     
     return elemento.upper() in PALABRAS_RESERVADAS
 
-def query_formatter(query):
+def query_formatter(query,debug = False):
     """_summary_
 
     Args:
@@ -72,10 +65,15 @@ def query_formatter(query):
     """
     ##TODO: GESTIONAR TODAS LAS PALABRAS RESERVADAS DE SQL PARA QUE PUEDAN SER FORMATEADAS. AGREGAR BANDERA PARA LA PALABRA ANTERIOR ASI NO HACE LE SALTO
     ##TODO: POR AHORA FUNCIONA CON UNA QUERY SENCILLA (SELECT * FROM) PROXIMO PASO AGREGAR JOINS,ETC
-    ##TODO: TESTEAR QUERY2    
+    ##TODO: TESTEAR QUERY2  
+    # SE AGREGO LA TABULACION
+    ## TODO: GESTIONAR LA CONDICION DE LAS PALABRAS QUE CONTIENEN UNA COMA  
     
     query_split = query.split()
     query_split = reservadas_upper(query_split)
+
+    if debug:
+        print(query_split)
 
     enter = "\n"
     tab = "\t"
@@ -88,22 +86,17 @@ def query_formatter(query):
         if (query_split.index(elemento) == 0):
             query_formateada +=elemento+enter
         
-        elif (elemento[-1] == ',') or check_next_from(query_split,elemento):
-
+        elif (elemento[-1] == ',') or check_next_reservada(query_split,elemento):        
             query_formateada +=tab + elemento+enter     
         else:
-            #
+            
             if palabras_reservadas(elemento): 
                 if check_not_prev_reservada(query_split,elemento) and check_not_next_reservada(query_split,elemento):
                     query_formateada += elemento + espacio
-                #else:
-                #    query_formateada += elemento + espacio + enter
+         
                 elif check_not_prev_reservada(query_split,elemento) and check_next_reservada(query_split,elemento):
                      query_formateada +=  enter+ elemento + espacio + query_split[query_split.index(elemento)+1] + espacio            
-                #if elemento.upper() == "JOIN" or elemento.upper() == 'ON':
-                #    query_formateada +=  elemento + espacio 
-                #else:
-                #     query_formateada += enter + elemento + espacio  
+           
             else:
                 query_formateada += elemento + espacio
 
@@ -111,9 +104,7 @@ def query_formatter(query):
 
 
 if __name__ == "__main__":
-    print(f"Query ingresada:\n{query2}")
+    print(f"Query ingresada:\n{query_prueba}")
     print()
-    print(f"Query formateada:\n{query_formatter(query2)}") 
-    #query_split = query.split()
-    #print(query_split)
-    #print(reservadas_upper(query_split))
+    print(f"Query formateada:\n{query_formatter(query_prueba)}") 
+    
