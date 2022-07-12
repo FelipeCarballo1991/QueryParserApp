@@ -1,6 +1,8 @@
 from doctest import master
 import tkinter as tk
 from tkinter import messagebox
+
+from numpy import empty
 #import pyperclip as clipboard
 #import os
 from query_formatter import query_formatter
@@ -27,10 +29,15 @@ class SubWindow:
 
         self.button = tk.Button(self.frame,text = "Convertir",command = self.csv_export)
         self.button.pack(side = tk.LEFT)
+        
 
     def csv_export(self):
-        mensaje = messagebox.showinfo("Success","Exportado en el escritorio")
-        self.destroy() 
+        if len(self.caja_texto.get()) != 0:
+            mensaje = messagebox.showinfo("Success","Exportado en el escritorio")
+            self.destroy() 
+        else:
+            mensaje = messagebox.showinfo("ERROR","Ingrese un nombre")       
+        
 
     def destroy(self):
         self.frame.destroy()
