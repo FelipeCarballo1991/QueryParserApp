@@ -1,9 +1,40 @@
+from doctest import master
 import tkinter as tk
+from tkinter import messagebox
 #import pyperclip as clipboard
 #import os
 from query_formatter import query_formatter
 
+class SubWindow:
 
+    def __init__(self):
+        
+        #self.frame = tk.Frame(self.master)
+        self.subwindow = tk.Toplevel()
+        self.frame = tk.Frame(self.subwindow)
+        self.frame.pack(expand = True, fill = tk.BOTH)
+        #self.subwindow.pack()
+        self.subwindow.grab_set() # Mantiene el foco de la ventana hasta que se cierre y devuelve la interacción con la ventana principal el root en este caso.
+        #self.subwindow.grab_set_global()
+        self.subwindow.focus_set() # Mantiene el foco cuando se abre la ventana.
+        #self.subwindow.pack()
+
+        self.etiqueta = tk.Label(self.frame,text = "Ingrese Nombre del archivo")
+        self.etiqueta.pack()
+
+        self.caja_texto = tk.Entry(self.frame)
+        self.caja_texto.pack()
+
+        self.button = tk.Button(self.frame,text = "Convertir",command = self.csv_export)
+        self.button.pack(side = tk.LEFT)
+
+    def csv_export(self):
+        mensaje = messagebox.showinfo("Success","Exportado en el escritorio")
+        self.destroy() 
+
+    def destroy(self):
+        self.frame.destroy()
+        self.subwindow.destroy()
 
 class Window:
 
@@ -40,9 +71,23 @@ class Window:
         #self.button = tk.Button(self.frame,text = "Copiar",command = self.copy)
         #self.button.pack(side = tk.LEFT)
 
+        self.button = tk.Button(self.frame,text = "Excel",command = self.excel_export) #TODO exportar excel
+        self.button.pack(side = tk.LEFT)   
+        self.button = tk.Button(self.frame,text = "CSV",command = self.csv_export) #TODO exportar CSV
+        self.button.pack(side = tk.LEFT)   
+
         self.button = tk.Button(self.frame,text = "Borrar",command = self.clear)
         self.button.pack(side = tk.RIGHT)   
     
+    def csv_export(self):
+        self.subwindow = SubWindow()
+        self.subwindow.subwindow.mainloop()
+        #mensaje = messagebox.showinfo("CSV","Exportado en el escritorio")
+
+    def excel_export(self):
+        self.subwindow = SubWindow()
+        self.subwindow.subwindow.mainloop()
+        #mensaje = messagebox.showinfo("EXCEL","Exportado en el escritorio")      
 
     def getInput(self): 
         self.text_input = self.text.get("1.0","end")

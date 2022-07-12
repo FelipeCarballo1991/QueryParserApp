@@ -32,8 +32,6 @@ def check_not_prev_reservada(lista,elemento):
     except:
         None
 
-
-
 def reservadas_upper(lista):
 
     for index,elemento in enumerate(lista):
@@ -83,7 +81,7 @@ def query_formatter(query,debug = False):
 
     for elemento in query_split:
         
-        if (query_split.index(elemento) == 0):
+        if (query_split.index(elemento) == 0): #Para el select
             query_formateada +=elemento+enter
         
         elif (elemento[-1] == ',') or check_next_reservada(query_split,elemento):        

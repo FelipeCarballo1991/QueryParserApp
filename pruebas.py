@@ -1,3 +1,4 @@
+from tkinter import Tk
 query2 = "select id, solicitud_id, vinculo_responsable_id, primer_apellido_responsable, segundo_apellido_responsable, primer_nombre_responsable, segundo_nombre_responsable, fecha_nacimiento_responsable, sexo_responsable, pais_responsable_id, tipo_documento_responsable_id, documento_responsable, cuil_responsable, telefono_responsable, email_responsable, created_at, updated_at from miescuelamg.becas_media_responsable r left join miescuelamg.becas_media_solicitud s on r.solicitud_id = s.id"
 
 query2_split = query2.split()
@@ -32,10 +33,18 @@ def remover_saltos_linea(archivo):
         print('El archivo especificado no existe.')
 
 
-resultado = remover_saltos_linea('C:/Users/felipe.carballo/Desktop/palabras_reservadas.txt')
-lista_vacia = []
-for elemento in resultado:
-    if elemento != "":
-        lista_vacia.append(elemento)
+#resultado = remover_saltos_linea('C:/Users/felipe.carballo/Desktop/palabras_reservadas.txt')
+#lista_vacia = []
+#for elemento in resultado:
+#    if elemento != "":
+#        lista_vacia.append(elemento)
 
-print(lista_vacia)
+#print(lista_vacia)
+
+
+r = Tk()
+r.withdraw()
+r.clipboard_clear()
+r.clipboard_append('i can has clipboardz?')
+r.update() # now it stays on the clipboard after the window is closed
+r.destroy()
