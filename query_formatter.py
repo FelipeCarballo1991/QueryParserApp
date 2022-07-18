@@ -1,6 +1,6 @@
 from constants import PALABRAS_RESERVADAS
 
-query_prueba = "select alumno_id, tipo_documento, primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, fecha_nacimiento, sexo, pais_nac, telefono_alternativo, email, trabaja, sueldo, pension, pensionado, padres_presos, discapacitado, enfermedad, vive_con, embarazada, tiene_hijos, tiene_subsidios, responsable_propio, created_at, updated_at from becasmedias.alumno a"
+query_prueba = "select alumno_id as id, tipo_documento, primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, fecha_nacimiento, sexo, pais_nac, telefono_alternativo, email, trabaja, sueldo, pension, pensionado, padres_presos, discapacitado, enfermedad, vive_con, embarazada, tiene_hijos, tiene_subsidios, responsable_propio, created_at, updated_at from becasmedias.alumno a"
 
 def query_columns(query = "select asd, asd, asd, from asdasdasd left join"):
 
@@ -13,24 +13,26 @@ def query_columns(query = "select asd, asd, asd, from asdasdasd left join"):
     columnas = []
     for elemento in query_split:
 
-        if elemento not in PALABRAS_RESERVADAS and  (not check_last_from(query_split,elemento)):
-            if not check_next_from(query_split,elemento):
+        if elemento not in PALABRAS_RESERVADAS and  (not check_last_word(query_split,elemento)):
+            #TODO: Tomar los alias de las columas columna AS [column]
+
+            if not check_next_word(query_split,elemento):
                 columnas.append(elemento[:-1]) #Quito las comas
             else:
                 columnas.append(elemento) #la ultima columna (columna from) sin comas la agrego entera
         #columnas.pop()   
     return columnas[:-1]#quito el ultimo espacio
     
-def check_last_from(lista,elemento):
+def check_last_word(lista,elemento, palabra = "FROM"):
     try:
-        if lista[lista.index(elemento)-1] == "FROM":
+        if lista[lista.index(elemento)-1] == palabra:
             return True
     except:
         False
 
-def check_next_from(lista,elemento):
+def check_next_word(lista,elemento, palabra = "FROM"):
     try:
-        if lista[lista.index(elemento)+1] == "FROM":
+        if lista[lista.index(elemento)+1] == palabra:
             return True
     except:
         False
