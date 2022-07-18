@@ -2,15 +2,39 @@ from constants import PALABRAS_RESERVADAS
 
 query_prueba = "select alumno_id, tipo_documento, primer_apellido, segundo_apellido, primer_nombre, segundo_nombre, fecha_nacimiento, sexo, pais_nac, telefono_alternativo, email, trabaja, sueldo, pension, pensionado, padres_presos, discapacitado, enfermedad, vive_con, embarazada, tiene_hijos, tiene_subsidios, responsable_propio, created_at, updated_at from becasmedias.alumno a"
 
+def query_columns(query = "select asd, asd, asd, from asdasdasd left join"):
 
-"""
+    query_split = []
+    query_split = query.split()
+    query_split = reservadas_upper(query_split)
+    #
+    # print(query_split)
+    #print()
+    columnas = []
+    for elemento in query_split:
+
+        if elemento not in PALABRAS_RESERVADAS and  (not check_last_from(query_split,elemento)):
+            if not check_next_from(query_split,elemento):
+                columnas.append(elemento[:-1]) #Quito las comas
+            else:
+                columnas.append(elemento) #la ultima columna (columna from) sin comas la agrego entera
+        #columnas.pop()   
+    return columnas[:-1]#quito el ultimo espacio
+    
+def check_last_from(lista,elemento):
+    try:
+        if lista[lista.index(elemento)-1] == "FROM":
+            return True
+    except:
+        False
+
 def check_next_from(lista,elemento):
     try:
         if lista[lista.index(elemento)+1] == "FROM":
             return True
     except:
-        None
-"""    
+        False
+    
 def check_next_reservada(lista,elemento):
     try:
         if lista[lista.index(elemento)+1] in PALABRAS_RESERVADAS:
@@ -102,7 +126,18 @@ def query_formatter(query,debug = False):
 
 
 if __name__ == "__main__":
-    print(f"Query ingresada:\n{query_prueba}")
-    print()
-    print(f"Query formateada:\n{query_formatter(query_prueba)}") 
+
+
+    #print(f"Query ingresada:\n{query_prueba}")
+    #print()
+    #print(f"Query formateada:\n{query_formatter(query_prueba)}")
+    #print()
+    columnas = query_columns(query_prueba) 
+
+    print(columnas)
+
+    #if columnas[-1] == "":
+    #    print(True)
+    #else:
+    #    print(False)
     
